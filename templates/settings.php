@@ -15,12 +15,12 @@
 		<div class="mb-4">
 			<label for="api_connector_auth_url"><?php _e( 'API Auth URL', 'api_connector' ); ?></label>
 			<input type="url" name="api_connector_auth_url" value="<?php echo $auth_url; ?>" />
-			<small>Generally like https://myapi.com/auth/token</small>
+			<small class="text-italic">Generally like https://myapi.com/auth/token</small>
 		</div>
 		<div class="mb-4">
 			<label for="api_connector_base_url"><?php _e( 'API Base URL', 'api_connector' ); ?></label>
 			<input type="url" name="api_connector_base_url" value="<?php echo $base_url; ?>" />
-			<small>Generally like https://myapi.com/api/v1</small>
+			<small class="text-italic">Generally like https://myapi.com/api/v1</small>
 		</div>
 		<div class="mb-4">
 			<label for="api_connector_client_id"><?php _e( 'Client ID', 'api_connector' ); ?></label>
@@ -35,6 +35,9 @@
 </div>
 
 <style>
+	.text-italic {
+		font-style: italic;
+	}
 	.mb-4 {
 		margin-bottom: 15px;
 	}
@@ -42,7 +45,6 @@
 		margin-bottom: 30px;
 	}
 	small {
-		font-style: italic;
 		margin-left: 2px;
 		margin-top: 2px;
 		color: #555;
