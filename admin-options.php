@@ -28,3 +28,10 @@ function api_connector_register_settings() {
 	register_setting( $option_group, $option_prefix . 'grant_password_password' );
 }
 
+add_action( 'admin_enqueue_scripts', 'api_connector_enqueue_scripts' );
+function api_connector_enqueue_scripts( $hook ) {
+	if ( 'settings_page_api_connector' == $hook ) {
+		wp_enqueue_style( 'api-connector-css', plugins_url( 'assets/css/style.css', __FILE__ ) );
+		wp_enqueue_script( 'api-connector-js',  plugins_url( 'assets/js/main.js', __FILE__ ), array( 'jquery' ), false, true );
+	}
+}

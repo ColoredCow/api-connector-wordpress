@@ -1,0 +1,43 @@
+.text-italic {
+	font-style: italic;
+}
+.mb-4 {
+	margin-bottom: 15px;
+}
+.mb-7 {
+	margin-bottom: 30px;
+}
+small {
+	margin-left: 2px;
+	margin-top: 2px;
+	color: #555;
+}
+select {
+	height: 30px;
+	margin-left: 0;
+	margin-right: 0;
+	display: block;
+}
+select {
+	height: 30px;
+	min-width: 300px;
+}
+input[type="url"],
+input[type="text"],
+input[type="password"] {
+	height: 30px;
+	min-width: 500px;
+	margin-left: 0;
+	margin-right: 0;
+}
+label {
+	display: inline-block;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+.d-none {
+	display: none;
+}
+.d-block {
+	display: block;
+}
