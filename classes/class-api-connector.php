@@ -15,31 +15,44 @@ class Api_Connector {
 		return get_option( self::$option_prefix . 'base_url' );
 	}
 
+	protected static function get_token_request_body() {
+		$grant_type = get_option( self::$option_prefix . 'grant_type' );
+		$body = array(
+			'grant_type' => $grant_type,
+			'client_id' => get_option( self::$option_prefix . 'grant_' . $grant_type . '_client_id' ),
+			'client_secret' => get_option( self::$option_prefix . 'grant_' . $grant_type . '_client_secret' ),
+		);
+		switch ($grant_type) {
+			case 'password':
+				$body['username'] = get_option( self::$option_prefix . 'grant_' . $grant_type . '_username' );
+				$body['password'] = get_option( self::$option_prefix . 'grant_' . $grant_type . '_password' );
+				break;
+		}
+		return $body;
+	}
+
 	protected static function fetch_new_token() {
 		$response = wp_remote_post( self::get_api_auth_url(), array(
 			'sslverify' => false,
-			'body' => array(
-				'grant_type' => 'client_credentials',
-				'client_id' => get_option( self::$option_prefix . 'client_id' ),
-				'client_secret' => get_option( self::$option_prefix . 'client_secret' ),
-			),
+			'body' => self::get_token_request_body(),
 		));
 
 		$token = json_decode( $response['body'] );
-
 		update_option( self::$option_prefix . 'auth_token', $token->access_token );
 		update_option( self::$option_prefix . 'auth_token_expiry', time() + intval($token->expires_in), false );
+		update_option( self::$option_prefix . 'refresh_token', 0 );
 		return $token->access_token;
 	}
 
 	public static function get_token() {
-		$auth_token = get_option( self::$option_prefix . 'auth_token' );
-		if ( ! $auth_token ) {
+		$is_token_expired = time() >= get_option( self::$option_prefix . 'auth_token_expiry' );
+		$refresh_token = get_option( self::$option_prefix . 'refresh_token' );
+		if ( $is_token_expired || $refresh_token ) {
 			return self::fetch_new_token();
 		}
 
-		$is_token_expired = time() >= get_option( self::$option_prefix . 'auth_token_expiry' );
-		if ( $is_token_expired ) {
+		$auth_token = get_option( self::$option_prefix . 'auth_token' );
+		if ( ! $auth_token ) {
 			return self::fetch_new_token();
 		}
 
